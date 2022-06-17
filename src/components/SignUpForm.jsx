@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
+// import { useNavigate } from 'react-router-dom'
 
 const SignUpForm = ({onLogin}) => {
+    // const navigate = useNavigate()
+    const [errors, setErrors] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+   
     const defaultData = {
         "username": '',
         "password": '',
@@ -18,9 +23,6 @@ const SignUpForm = ({onLogin}) => {
         console.log(formData)
         setNewUser(formData)}
     
-    const [errors, setErrors] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-
     function handleSubmit(e) {
         e.preventDefault();
         setErrors([]);
@@ -39,10 +41,11 @@ const SignUpForm = ({onLogin}) => {
             role: newUser.role,
           }),
         }).then((r) => { 
-          setIsLoading(false);
-          
+          setIsLoading(false);          
           if (r.created) {
-            r.json().then((user) => onLogin(user));
+            r.json().then((user) => {
+              // navigate('/')
+              onLogin(user)});
           } else {
             r.json().then((err) => setErrors(err.errors));
           }
@@ -95,7 +98,7 @@ const SignUpForm = ({onLogin}) => {
           onChange={handleChange}
         />
      
-        <label htmlFor="role">Your role</label>
+        <label htmlFor="role">Your Title</label>
         <input 
         type="text"         
           id="role"

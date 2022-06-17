@@ -10,21 +10,25 @@ import Employees from './pages/Employees';
 import Projects from './pages/Projects';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   
   useEffect(() => {
     document.title = 'Project Now';
-
-    fetch('http://localhost:3001/projects')
-      .then(res => res.json())
-      .then(data => console.log(data));
+    fetch('http://localhost:3001/me')
+      .then((r) => {
+        if (r.ok) {
+          r.json()
+          .then((user) => setUser(user))};
+      });      
   }, []);
+
+  // if (!user) return <SignUpForm onLogin={setUser}/>;
 
   return (
     <div className="App">
       <Router>
         <NavBar onLogout={setUser} user={user}/>
+        <h1>here is you application will be</h1>
         <Routes>
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/signup" element={<SignUpForm onLogin={setUser} user={user}/>} />
