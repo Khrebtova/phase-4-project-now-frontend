@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom'
+import { backendUrl, headers } from '../Global'
 const SignUpForm = ({onLogin}) => {
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const [errors, setErrors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
    
@@ -27,11 +27,9 @@ const SignUpForm = ({onLogin}) => {
         e.preventDefault();
         setErrors([]);
         setIsLoading(true);
-        fetch('http://localhost:3001/signup', {
+        fetch(backendUrl+'/signup', {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify({
             username: newUser.username,
             password: newUser.password,
@@ -54,7 +52,7 @@ const SignUpForm = ({onLogin}) => {
     
   return (
     <form onSubmit={handleSubmit}>
-      
+        <h2>Complete all fields to create an account</h2>
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -67,8 +65,7 @@ const SignUpForm = ({onLogin}) => {
         <input
           type="password"
           id="password"
-          value={newUser.password}
-       
+          value={newUser.password}       
           onChange={handleChange}
           autoComplete="current-password"
         />
@@ -108,8 +105,10 @@ const SignUpForm = ({onLogin}) => {
      
         <button type="submit">{isLoading ? "Loading..." : "Sign Up"}</button>     
       
-        {errors.map((err) => (<h2 key={err}>{err}</h2>))}
-      
+        {errors ? errors.map((err) => (<h2 key={err}>{err}</h2>)) : null}
+        
+        <h2> Already have an account? Please log In</h2>
+        <button onClick={()=>navigate('/login')}>Login</button>
     </form>
 
   )

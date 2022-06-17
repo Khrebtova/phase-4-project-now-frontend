@@ -28,7 +28,7 @@ function App() {
     <div className="App">
       <Router>
         <NavBar onLogout={setUser} user={user}/>
-        <h1>here is you application will be</h1>
+        
         <Routes>
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/signup" element={<SignUpForm onLogin={setUser} user={user}/>} />
