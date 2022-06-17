@@ -1,22 +1,37 @@
 // import './App.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
+import SignUpForm from './components/SignUpForm';
+import LoginForm from './components/LoginForm';
 import Clients from './pages/Clients';
 import Employees from './pages/Employees';
 import Projects from './pages/Projects';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  
+  useEffect(() => {
+    document.title = 'Project Now';
+
+    fetch('http://localhost:3001/projects')
+      .then(res => res.json())
+      .then(data => console.log(data));
+  }, []);
+
   return (
     <div className="App">
       <Router>
-        <NavBar />
+        <NavBar onLogout={setUser} user={user}/>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/projects" element={<Projects />} />
+          <Route path="/" element={<Home user={user}/>} />
+          <Route path="/signup" element={<SignUpForm onLogin={setUser} user={user}/>} />
+          <Route path="/login" element={<LoginForm onLogin={setUser} user={user}/>} />
+          <Route path="/clients" element={<Clients />} user={user}/>
+          <Route path="/employees" element={<Employees user={user}/>} />
+          <Route path="/projects" element={<Projects user={user}/>} />
         </Routes>
 
       </Router>
